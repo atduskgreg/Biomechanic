@@ -16,12 +16,14 @@ void setup() {
   frameRate(70);
   frames = new ArrayList();
   smooth();
+  
+  textFont(loadFont("Dialog-10.vlw"));
 }
 
 void draw() {
   background(255);
   fill(0);
-  textSize(10);
+  //textSize(10);
   text("frameRate: " + int(frameRate), 5, 10);
   if (loaded) {
     translate(width - 50, height - 50);

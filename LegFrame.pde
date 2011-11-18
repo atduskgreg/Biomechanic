@@ -32,13 +32,15 @@ class LegFrame {
   void drawJoint(PVector joint, String jointName, int offsetX, int offsetY) {
     ellipse(joint.x, joint.y, radius, radius);
     if (drawText) {
-      textSize(7);
+      //textSize(7);
 
       pushMatrix();
         translate(joint.x, joint.y);
         rotate(radians(180));
         translate(-1 * joint.x, -1 * joint.y);
-        text(jointName, joint.x + offsetX + 5, joint.y + offsetY);
+        translate(joint.x + offsetX + 5, joint.y + offsetY);
+        scale(0.6);
+        text(jointName,0,0);
       popMatrix();
     }
   }
@@ -63,7 +65,7 @@ class LegFrame {
     drawJoint(rightHeel, "Right Heel", 0, 5);    
     line(rightHeel.x, rightHeel.y, rightMetatarsal.x, rightMetatarsal.y);
     
-    drawJoint(rightMetatarsal, "Right Metatarsal", -65, 3);
+    drawJoint(rightMetatarsal, "Right Metatarsal", -60, 3);
   }
 }
 
