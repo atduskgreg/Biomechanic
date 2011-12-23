@@ -1,4 +1,16 @@
-class LegFrame {
+class Joint{
+  String name;
+  ArrayList<Frame> frames;
+  int radius;
+}
+
+class Frame{
+  float time;  
+}
+
+
+/*
+class BodyFrame {
   PVector baseRibCage;
   PVector rightHip;
   PVector rightKnee;
@@ -11,7 +23,7 @@ class LegFrame {
 
   int radius;
 
-  LegFrame(String csvLine) {
+  BodyFrame(String csvLine) {
     String[] positions = csvLine.split(",");
 
     baseRibCage = new PVector(float(positions[2]), float(positions[3]));
@@ -68,4 +80,4 @@ class LegFrame {
     drawJoint(rightMetatarsal, "Right Metatarsal", -60, 3);
   }
 }
-
+*/

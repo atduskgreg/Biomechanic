@@ -1,13 +1,10 @@
 import javax.swing.JFileChooser;
 
-ArrayList<LegFrame> frames;
-
-boolean loaded = false;
-
 JFileChooser chooser = new JFileChooser();
-
+/*
+ArrayList<BodyFrame> frames;
 int currentFrame = 0;
-
+boolean loaded = false;
 boolean drawText = true;
 
 void setup() {
@@ -40,7 +37,50 @@ void draw() {
 void mousePressed(){
   drawText = !drawText;
 }
+*/
 
+Recording recording;
+
+
+import controlP5.*;
+
+ControlP5 controlP5;
+Radio titleSelector;
+Radio dataSelector;
+
+CSVMap csvMap;
+boolean loaded = false;
+
+void setup(){
+  size(1000, 600);
+  controlP5 = new ControlP5(this);
+  titleSelector = controlP5.addRadio("titleRowChosen",100,160);
+  titleSelector.deactivateAll();
+  
+  dataSelector = controlP5.addRadio("dataRowChosen",500,160);
+  dataSelector.deactivateAll();
+  
+  controlP5.addButton("Load",0,100,100,80,19);
+
+}
+
+void draw(){
+  if(loaded){}
+}
+
+void dataRowChosen(int chosen){
+  println("csvMap.dataStartRow = " + chosen);
+  csvMap.dataStartRow = chosen;
+}
+
+void titleRowChosen(int chosen){
+  println("csvMap.labelRow = " + chosen);
+  csvMap.labelRow = chosen;
+}
+
+void Load(int theValue){
+  println("saving");
+}
 
 void keyReleased() {
   if (!loaded) {
@@ -48,12 +88,14 @@ void keyReleased() {
     chooser.setFileFilter(chooser.getAcceptAllFileFilter());
     int returnVal = chooser.showOpenDialog(null);
     if (returnVal == JFileChooser.APPROVE_OPTION) {
-      println("inside");
-      String[] lines = loadStrings(chooser.getSelectedFile().getAbsolutePath());
-      for (int i = 2; i < lines.length; i++) {
-        frames.add(new LegFrame(lines[i]));
+      println("got file");
+      csvMap = new CSVMap(chooser.getSelectedFile().getAbsolutePath());
+      String[] options = csvMap.headerOptions();
+      for(int i =0; i< options.length; i++){
+        titleSelector.add(options[i], i);
+        dataSelector.add(options[i], i); 
       }
-
+      
       loaded = true;
     }
   }
