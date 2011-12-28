@@ -2,6 +2,7 @@ import javax.swing.JFileChooser;
 
 ArrayList<LegFrame> frames;
 
+
 boolean loaded = false;
 
 JFileChooser chooser = new JFileChooser();
@@ -48,10 +49,11 @@ void keyReleased() {
     chooser.setFileFilter(chooser.getAcceptAllFileFilter());
     int returnVal = chooser.showOpenDialog(null);
     if (returnVal == JFileChooser.APPROVE_OPTION) {
-      println("inside");
-      String[] lines = loadStrings(chooser.getSelectedFile().getAbsolutePath());
-      for (int i = 2; i < lines.length; i++) {
-        frames.add(new LegFrame(lines[i]));
+      println(chooser.getSelectedFile().getAbsolutePath());
+      
+      String[] rows = loadStrings(chooser.getSelectedFile().getAbsolutePath());
+      for (int i = 2; i < rows.length; i++) {
+        frames.add(new LegFrame(rows[i]));
       }
 
       loaded = true;
