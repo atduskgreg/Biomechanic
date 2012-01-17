@@ -6,6 +6,8 @@ class FrameController {
   Rectangle playhead;
   Rectangle playarea;
 
+  boolean playing = false;
+
 
   FrameController(PApplet p, Recording recording, int x, int y, int w) {
     this.recording = recording;
@@ -17,6 +19,10 @@ class FrameController {
   }
 
   void update() {
+    if(playing){
+      recording.nextFrame();
+    }
+    
     float proportion =  float(recording.currentFrame) / recording.totalFrames;
     float offset = playarea.width * proportion;
 
@@ -34,8 +40,13 @@ class FrameController {
 
     fill(100);
     text("0", 0, 55);
-    text(recording.totalFrames, playarea.width - 20, 55);
+    text(recording.totalFrames-1, playarea.width - 20, 55);
 
+    text(recording.currentFrame + "/" + (recording.totalFrames-1), playarea.width/2 - 40, 55);
+    fill(190);
+    text("Play/Pause - spacebar      Previous Frame - left arrow      Next Frame - right arrow", playarea.width/2 - 225, 90);
+
+  
 
     noStroke();
     fill(0);
@@ -86,7 +97,7 @@ class FrameController {
     } 
     
     if(key == ' '){
-      
+      playing = !playing;
     }
     
   }
