@@ -16,14 +16,14 @@ class GaitPhase {
   color phaseColor(){
     color result = color(255);
     switch(type) {
-    case SINGLE_SUPPORT_LEFT: 
-      result = color(255,0,0);
+    case SINGLE_SUPPORT_RIGHT: 
+      result = color(255,100,100);
       break;
-      case SINGLE_SUPPORT_RIGHT: 
-      result = color(0,255,0);
+      case SINGLE_SUPPORT_LEFT:
+      result = color(100,255,100);
       break;
       case DOUBLE_SUPPORT: 
-      result = color(0,0,255);
+      result = color(100,100,255);
       break;
     }  
 

@@ -78,7 +78,7 @@ class Recording {
 
     // TODO: replace this with actually calculating
     // the phase of the last frame
-    GaitPhase lastPhase = new GaitPhase(lastFrameChanged, totalFrames-1, GaitPhase.DOUBLE_SUPPORT);
+    GaitPhase lastPhase = new GaitPhase(lastFrameChanged, totalFrames, GaitPhase.DOUBLE_SUPPORT);
     results.add(lastPhase);
 
     return results;

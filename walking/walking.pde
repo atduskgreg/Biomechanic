@@ -1,13 +1,13 @@
-import processing.opengl.*;
-
 CSVMap csvMap;
 Recording recording;
 
 FrameController controller;
 ArrayList<GaitPhase> phases;
 
+int rot = 0;
+
 void setup() {
-  size(1000, 600, OPENGL);
+  size(1000, 600, P3D);
   csvMap = new CSVMap("walking_3d.csv");
   csvMap.dataStartRow = 6;
   csvMap.labelRow = 4;
@@ -38,7 +38,7 @@ void draw() {
   controller.update();
   controller.draw();
   
-  text(frameRate, 20, 20);
+  text(int(frameRate), 20, 20);
   
   fill(0, 255, 0);
   text("Right ankle height: " + recording.joints.get(3).positionAtFrame(recording.currentFrame).z, 20, 50);
@@ -57,6 +57,13 @@ void draw() {
     translate(300, 500, -100);
     scale(200);
     rotateX(radians(90));
+    
+    // for some reason this makes things incredibly slow
+    /*translate(0,0, 500);
+    rotateZ(radians(map(mouseX, 0, width, -180, 180)));
+    translate(0,0,-500);
+    */
+   
     recording.draw();
   popMatrix();
 }

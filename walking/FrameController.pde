@@ -44,9 +44,8 @@ class FrameController {
       int phaseStopX = frameToX(phase.endingFrame);
       noStroke();
       fill(phase.phaseColor());
-      rect(phaseStartX, 0, phaseStopX, playarea.height);
+      rect(phaseStartX, 0, phaseStopX - phaseStartX, playarea.height);
     }
-    
     
 
     fill(100);
