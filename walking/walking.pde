@@ -8,11 +8,13 @@ Recording originalRecording;
 
 boolean comparisonMode = false;
 
+boolean rotateMode = false;
+
+float rotation = 0;
+
 FrameController controller;
 ArrayList<GaitPhase> phases; // the working set that gets toggled with comparison
 ArrayList<GaitPhase> originalPhases; // the complete results of analysis
-
-int rot = 0;
 
 void setup() {
   size(1000, 600, OPENGL);
@@ -54,16 +56,34 @@ void draw() {
   Recording recording = comparison.recordings.get(0);
 
   fill(0, 255, 0);
-  text("Right ankle height: " + recording.joints.get(3).positionAtFrame(recording.currentFrame).z, 20, 50);
-  text("Right ankle dZ: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).z, 20, 65);
-  text("Right ankle dX: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).x, 20, 80);
+  text("Right ankle dX: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).x, 20, 35);
 
 
   fill(255, 0, 0);
-  text("Left ankle height: " + recording.joints.get(9).positionAtFrame(recording.currentFrame).z, 20, 95);
-  text("Left ankle dZ: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).z, 20, 110);
-  text("Left ankle dX: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).x, 20, 125);
+  text("Left ankle dX: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).x, 20, 50);
 
+  if(comparisonMode){
+    fill(0);
+    text("GAIT CYCLE COMPARISON", width-250, 20);
+      Recording recording1 = comparison.recordings.get(0);
+    Recording recording2 = comparison.recordings.get(1);
+   
+    float strideLength1 = recording1.joints.get(9).positionAtFrame(comparison.ranges.get(0).startingFrame).x - recording1.joints.get(9).positionAtFrame(comparison.ranges.get(0).endingFrame).x;
+    float strideLength2 = recording2.joints.get(9).positionAtFrame(comparison.ranges.get(1).startingFrame).x - recording2.joints.get(9).positionAtFrame(comparison.ranges.get(1).endingFrame).x;
+
+    fill(comparison.skeletonColors[0]);
+    text("Cycle 1 length (m): " + strideLength1, width-250, 35 );
+    fill(comparison.skeletonColors[1]);
+    text("Cycle 2 length (m): " + strideLength2, width-250, 50 );
+    fill(0);
+    text("Length difference (m): " + abs(strideLength1 - strideLength2), width-250, 65 );
+  } else {
+    fill(0);
+    text("FULL PLAYBACK", width-250, 20);
+    text("Gait phases detected: " + originalPhases.size(), width-250, 35 );
+    text("Complete gait cycles detected: " + originalPhases.size()/4, width-250, 50 );
+
+  }
 
 
   pushMatrix();
@@ -71,11 +91,18 @@ void draw() {
   scale(200);
   rotateX(radians(90));
 
-  // for some reason this makes things incredibly slow
-  /*translate(0,0, 500);
-   rotateZ(radians(map(mouseX, 0, width, -180, 180)));
+
+  if(rotateMode){
+    rotation = map(mouseX, 0, width, -180, 180);
+  }
+   
+    // for some reason this makes things incredibly slow only in 2.0a4
+   translate(0,0, 500);
+     rotateZ(radians(rotation));
    translate(0,0,-500);
-   */
+
+ 
+   
   comparison.update();
   comparison.draw();
   popMatrix();
@@ -120,6 +147,10 @@ void keyPressed() {
     else {
       switchToComparisonMode();
     }
+  }
+  
+  if(key == 'r') {
+    rotateMode = !rotateMode;
   }
 }
 

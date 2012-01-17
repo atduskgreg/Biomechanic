@@ -3,6 +3,8 @@ class Recording implements Cloneable {
   ArrayList<Joint> joints;
   int totalFrames;
   ArrayList<Limb> limbs;
+  
+  color skeletonColor = color(0); // default to black
 
   int currentFrame = 0;
 
@@ -113,8 +115,8 @@ class Recording implements Cloneable {
     ellipse(0, 0, 0.08, 0.08);
     popMatrix();
 
-    stroke(0);
-    strokeWeight(2);
+    stroke(skeletonColor);
+    strokeWeight(3);
     for (int i = 0; i < limbs.size(); i ++ ) {
       limbs.get(i).drawAtFrame(currentFrame);
     }

@@ -4,6 +4,8 @@ class Comparison {
   int currentFrame = 0;
   int totalFrames = 0;
   
+  color[] skeletonColors = {color(0, 100, 100), color(100, 100, 0)};
+  
   Comparison(){
     recordings = new ArrayList();
     ranges = new ArrayList();
@@ -55,6 +57,9 @@ class Comparison {
     // two seperate sets of state.
     try{
       Recording newRecording = recording.clone();
+      
+      newRecording.skeletonColor = skeletonColors[recordings.size()];
+      
       recordings.add(newRecording);
     }catch(CloneNotSupportedException error) {
       println(error);
