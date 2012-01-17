@@ -4,6 +4,7 @@ CSVMap csvMap;
 Recording recording;
 
 FrameController controller;
+ArrayList<GaitPhase> phases;
 
 void setup() {
   size(1000, 600, OPENGL);
@@ -16,13 +17,13 @@ void setup() {
   recording = new Recording(csvMap);
   controller = new FrameController(this, recording, 50, height - 100, width-100);
 
-  ArrayList phases = recording.detectPhases();
+  phases = recording.detectPhases();
 
   println("num phases: " + phases.size());
 
   for (int i = 0; i < phases.size(); i++) {
-    GaitPhase phase = (GaitPhase)phases.get(i); 
-    println("phase at frame: " + phase.beginningFrame + " type: " + phase.type);
+    GaitPhase phase = phases.get(i); 
+    println("beginning frame: " + phase.beginningFrame + "end frame: " + phase.endingFrame +  " type: " + phase.type);
   }
 }
 
@@ -41,10 +42,14 @@ void draw() {
   
   fill(0, 255, 0);
   text("Right ankle height: " + recording.joints.get(3).positionAtFrame(recording.currentFrame).z, 20, 50);
+  text("Right ankle dZ: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).z, 20, 65);
+  text("Right ankle dX: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).x, 20, 80);
   
 
   fill(255, 0, 0);
-  text("Left ankle height: " + recording.joints.get(9).positionAtFrame(recording.currentFrame).z, 20, 65);
+  text("Left ankle height: " + recording.joints.get(9).positionAtFrame(recording.currentFrame).z, 20, 95);
+  text("Left ankle dZ: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).z, 20, 110);
+  text("Left ankle dX: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).x, 20, 125);
 
   
 

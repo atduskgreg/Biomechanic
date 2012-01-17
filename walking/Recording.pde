@@ -28,27 +28,33 @@ class Recording {
     limbs.add(new Limb(this, 10, 9));
   }
 
+
   ArrayList<GaitPhase> detectPhases() {
     Joint leftJoint = joints.get(3);
     Joint rightJoint = joints.get(9);
-    
+
     ArrayList<GaitPhase> results = new ArrayList();
-    
+
+
+    int prevPhaseType = GaitPhase.DOUBLE_SUPPORT;
+    int lastFrameChanged = 0;
+
     for (int i = 1; i < totalFrames-1; i++) {
+
       // look for local minima in each limb
+      PVector leftSlope = leftJoint.slopeAtFrame(i);
+      PVector rightSlope = rightJoint.slopeAtFrame(i);
+
       boolean leftJointMin = false;
       boolean rightJointMin = false;
 
-      if (leftJoint.positionAtFrame(i).z < leftJoint.positionAtFrame(i-1).z 
-        && leftJoint.positionAtFrame(i).z < leftJoint.positionAtFrame(i+1).z) {
+      if (abs(leftSlope.z) < 0.01 && abs(leftSlope.x) < 0.01) {
         leftJointMin = true;
       }
 
-      if (rightJoint.positionAtFrame(i).z < rightJoint.positionAtFrame(i-1).z 
-        && rightJoint.positionAtFrame(i).z < rightJoint.positionAtFrame(i+1).z) {
+      if (abs(rightSlope.z) < 0.01 && abs(rightSlope.x) < 0.01) {
         rightJointMin = true;
       }
-
 
       int phase = -1;
       if (leftJointMin && rightJointMin) {
@@ -62,17 +68,22 @@ class Recording {
           phase = GaitPhase.SINGLE_SUPPORT_RIGHT;
         }
       }
-      
-      if(phase != -1){
-        results.add(new GaitPhase(i, phase));
+
+      if (phase != prevPhaseType) {
+        results.add(new GaitPhase(lastFrameChanged, i, prevPhaseType));  
+        prevPhaseType = phase;
+        lastFrameChanged = i;
       }
-      
-      // if the
     }
-    
+
+    // TODO: replace this with actually calculating
+    // the phase of the last frame
+    GaitPhase lastPhase = new GaitPhase(lastFrameChanged, totalFrames-1, GaitPhase.DOUBLE_SUPPORT);
+    results.add(lastPhase);
+
     return results;
   }
-  
+
 
   void draw() {
     noStroke();
@@ -83,20 +94,20 @@ class Recording {
     vertex(3.25, 0.5, 0);
     vertex(3.25, -0.5, 0);
     endShape();
-    
+
     strokeWeight(3);
 
-  stroke(0, 255, 0);
-  recording.joints.get(3).drawPath();
-  
-  stroke(255, 0, 0);
-  recording.joints.get(9).drawPath();
+    stroke(0, 255, 0);
+    recording.joints.get(3).drawPath();
+
+    stroke(255, 0, 0);
+    recording.joints.get(9).drawPath();
 
     PVector lpos = recording.joints.get(3).positionAtFrame(recording.currentFrame);
     PVector rpos = recording.joints.get(9).positionAtFrame(recording.currentFrame);
 
 
-  noStroke();
+    noStroke();
     pushMatrix();
     translate(lpos.x, lpos.y, lpos.z);
     fill(0, 255, 0);
@@ -150,7 +161,7 @@ class Recording {
         float y = float(dataColumns[j+1]);
         float z = 0; // if we're in 2D, default z to 0
 
-          if (csvMap.dimensions == 3) {
+        if (csvMap.dimensions == 3) {
           z = float(dataColumns[j+2]);
         } 
 

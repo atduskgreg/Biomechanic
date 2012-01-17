@@ -16,6 +16,21 @@ class Joint {
     }
     endShape();
   }
+  
+  PVector slopeAtFrame(int f){
+    PVector result = new PVector(0,0,0);
+    
+    Frame thisFrame = frames.get(f);
+    if(f > 0){
+      Frame prevFrame = frames.get(f - 1);
+      result.x = thisFrame.position.x - prevFrame.position.x;
+      result.y = thisFrame.position.y - prevFrame.position.y;
+      result.z = thisFrame.position.z - prevFrame.position.z;
+      
+    } 
+    
+    return result;
+  }
 
   void addFrame(Frame frame) {
     frames.add(frame);

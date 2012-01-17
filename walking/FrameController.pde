@@ -37,6 +37,17 @@ class FrameController {
     stroke(100);
     strokeWeight(0.5);
     rect(0, 0, playarea.width, playarea.height);
+    
+    for (int i = 0; i < phases.size(); i++) {
+      GaitPhase phase = phases.get(i); 
+      int phaseStartX = frameToX(phase.beginningFrame);
+      int phaseStopX = frameToX(phase.endingFrame);
+      noStroke();
+      fill(phase.phaseColor());
+      rect(phaseStartX, 0, phaseStopX, playarea.height);
+    }
+    
+    
 
     fill(100);
     text("0", 0, 55);
@@ -54,6 +65,11 @@ class FrameController {
 
 
     popMatrix();
+  }
+  
+  int frameToX(int _frame){
+      return int(map(_frame, 0, recording.totalFrames, 0, playarea.width));
+
   }
 
   int frameFromX(int _x) {
