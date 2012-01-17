@@ -1,5 +1,5 @@
 class GaitPhase {
-  int beginningFrame;
+  int startingFrame;
   int endingFrame;
   int type;
   
@@ -7,8 +7,8 @@ class GaitPhase {
   static final int SINGLE_SUPPORT_RIGHT = 1;
   static final int DOUBLE_SUPPORT = 2;
   
-  GaitPhase(int beginningFrame, int endingFrame, int type){
-    this.beginningFrame = beginningFrame;
+  GaitPhase(int startingFrame, int endingFrame, int type){
+    this.startingFrame = startingFrame;
     this.endingFrame = endingFrame;
     this.type = type;
   }

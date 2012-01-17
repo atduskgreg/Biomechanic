@@ -1,4 +1,4 @@
-class Recording {
+class Recording implements Cloneable {
   CSVMap csvMap;
   ArrayList<Joint> joints;
   int totalFrames;
@@ -78,23 +78,15 @@ class Recording {
 
     // TODO: replace this with actually calculating
     // the phase of the last frame
-    GaitPhase lastPhase = new GaitPhase(lastFrameChanged, totalFrames , GaitPhase.DOUBLE_SUPPORT);
+    GaitPhase lastPhase = new GaitPhase(lastFrameChanged, totalFrames, GaitPhase.DOUBLE_SUPPORT);
     results.add(lastPhase);
 
     return results;
   }
 
 
-  void draw() {
-    noStroke();
-    fill(254);
-    beginShape(QUADS);
-    vertex(-1.25, -0.5, 0);
-    vertex(-1.25, 0.5, 0);
-    vertex(3.25, 0.5, 0);
-    vertex(3.25, -0.5, 0);
-    endShape();
 
+  void draw() {
     strokeWeight(3);
 
     stroke(0, 255, 0);
@@ -161,7 +153,7 @@ class Recording {
         float y = float(dataColumns[j+1]);
         float z = 0; // if we're in 2D, default z to 0
 
-        if (csvMap.dimensions == 3) {
+          if (csvMap.dimensions == 3) {
           z = float(dataColumns[j+2]);
         } 
 
@@ -170,6 +162,10 @@ class Recording {
         currentJointIndex++;
       }
     }
+  }
+
+  Recording clone() throws CloneNotSupportedException {
+    return (Recording)super.clone();
   }
 }
 

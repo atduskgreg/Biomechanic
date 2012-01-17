@@ -36,10 +36,12 @@ class FrameController {
     strokeWeight(0.5);
     rect(0, 0, playarea.width, playarea.height);
     
+    int offset = phases.get(0).startingFrame;
+    
     for (int i = 0; i < phases.size(); i++) {
       GaitPhase phase = phases.get(i); 
-      int phaseStartX = frameToX(phase.beginningFrame);
-      int phaseStopX = frameToX(phase.endingFrame);
+      int phaseStartX = frameToX(phase.startingFrame - offset);
+      int phaseStopX = frameToX(phase.endingFrame - offset);
       noStroke();
       fill(phase.phaseColor());
       rect(phaseStartX, 0, phaseStopX - phaseStartX, playarea.height);
@@ -51,7 +53,7 @@ class FrameController {
 
     text(comparison.currentFrame + "/" + (comparison.totalFrames-1), playarea.width/2 - 40, 55);
     fill(190);
-    text("Play/Pause - spacebar      Previous Frame - left arrow      Next Frame - right arrow", playarea.width/2 - 225, 90);
+    text("Play/Pause - spacebar      Previous Frame - left arrow      Next Frame - right arrow      Toggle Comparison - c", playarea.width/2 - 260, 90);
 
     noStroke();
     fill(0);

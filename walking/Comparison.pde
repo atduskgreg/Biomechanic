@@ -11,11 +11,20 @@ class Comparison {
   
   void update(){
     for(int i = 0; i < recordings.size(); i++){
-      recordings.get(i).currentFrame = currentFrame;
+      recordings.get(i).currentFrame = currentFrame + ranges.get(i).startingFrame;
     }
   }
   
   void draw(){
+    noStroke();
+    fill(254);
+    beginShape(QUADS);
+    vertex(-1.25, -0.5, 0);
+    vertex(-1.25, 0.5, 0);
+    vertex(3.25, 0.5, 0);
+    vertex(3.25, -0.5, 0);
+    endShape();
+        
     for(int i = 0; i < recordings.size(); i++){
       recordings.get(i).draw();
     }
@@ -29,7 +38,15 @@ class Comparison {
   }
   
   void addRecording(Recording recording, int fromFrame, int toFrame){
-    recordings.add(recording);
+    // have to clone the recordings so we can maintain
+    // two seperate sets of state.
+    try{
+      Recording newRecording = recording.clone();
+      recordings.add(newRecording);
+    }catch(CloneNotSupportedException error) {
+      println(error);
+    }
+    
     FrameRange range = new FrameRange(fromFrame, toFrame);
     ranges.add(range);
     
