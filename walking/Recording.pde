@@ -78,7 +78,7 @@ class Recording {
 
     // TODO: replace this with actually calculating
     // the phase of the last frame
-    GaitPhase lastPhase = new GaitPhase(lastFrameChanged, totalFrames, GaitPhase.DOUBLE_SUPPORT);
+    GaitPhase lastPhase = new GaitPhase(lastFrameChanged, totalFrames , GaitPhase.DOUBLE_SUPPORT);
     results.add(lastPhase);
 
     return results;
@@ -98,13 +98,13 @@ class Recording {
     strokeWeight(3);
 
     stroke(0, 255, 0);
-    recording.joints.get(3).drawPath();
+    joints.get(3).drawPath();
 
     stroke(255, 0, 0);
-    recording.joints.get(9).drawPath();
+    joints.get(9).drawPath();
 
-    PVector lpos = recording.joints.get(3).positionAtFrame(recording.currentFrame);
-    PVector rpos = recording.joints.get(9).positionAtFrame(recording.currentFrame);
+    PVector lpos = joints.get(3).positionAtFrame(currentFrame);
+    PVector rpos = joints.get(9).positionAtFrame(currentFrame);
 
 
     noStroke();

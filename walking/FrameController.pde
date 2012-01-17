@@ -1,7 +1,7 @@
 import java.awt.Rectangle;
 
 class FrameController {
-  Recording recording;
+  Comparison comparison;
 
   Rectangle playhead;
   Rectangle playarea;
@@ -9,21 +9,19 @@ class FrameController {
   boolean playing = false;
 
 
-  FrameController(PApplet p, Recording recording, int x, int y, int w) {
-    this.recording = recording;
+  FrameController(PApplet p, Comparison comparison, int x, int y, int w) {
+    this.comparison = comparison;
 
     playarea = new Rectangle(x,y, w,40);
-    
-
     playhead = new Rectangle(0, 0, 5, 40);
   }
 
   void update() {
     if(playing){
-      recording.nextFrame();
+      comparison.nextFrame();
     }
-    
-    float proportion =  float(recording.currentFrame) / recording.totalFrames;
+        
+    float proportion =  float(comparison.currentFrame) / comparison.totalFrames;
     float offset = playarea.width * proportion;
 
     playhead.x = int(offset);
@@ -46,17 +44,14 @@ class FrameController {
       fill(phase.phaseColor());
       rect(phaseStartX, 0, phaseStopX - phaseStartX, playarea.height);
     }
-    
 
     fill(100);
     text("0", 0, 55);
-    text(recording.totalFrames-1, playarea.width - 20, 55);
+    text(comparison.totalFrames-1, playarea.width - 20, 55);
 
-    text(recording.currentFrame + "/" + (recording.totalFrames-1), playarea.width/2 - 40, 55);
+    text(comparison.currentFrame + "/" + (comparison.totalFrames-1), playarea.width/2 - 40, 55);
     fill(190);
     text("Play/Pause - spacebar      Previous Frame - left arrow      Next Frame - right arrow", playarea.width/2 - 225, 90);
-
-  
 
     noStroke();
     fill(0);
@@ -67,12 +62,12 @@ class FrameController {
   }
   
   int frameToX(int _frame){
-      return int(map(_frame, 0, recording.totalFrames, 0, playarea.width));
+      return int(map(_frame, 0, comparison.totalFrames, 0, playarea.width));
 
   }
 
   int frameFromX(int _x) {
-    return int(map(_x - playarea.x, 0, playarea.width, 0, recording.totalFrames));
+    return int(map(_x - playarea.x, 0, playarea.width, 0, comparison.totalFrames));
   }
 
   void mousePressed() {
@@ -90,24 +85,24 @@ class FrameController {
 
 
   void goToFrame(int frame) {
-    if(frame >= recording.totalFrames){
+    if(frame >= comparison.totalFrames){
      frame = 0;
     }
     
     if(frame < 0){
-      frame = recording.totalFrames - 1;
+      frame = comparison.totalFrames - 1;
     }
-    recording.currentFrame = frame;
+    comparison.currentFrame = frame;
   }
 
   void keyPressed() {
     if (key == CODED) {
       if (keyCode == LEFT) {
-        goToFrame(recording.currentFrame - 1);
+        goToFrame(comparison.currentFrame - 1);
       }
 
       if (keyCode == RIGHT) {
-        goToFrame(recording.currentFrame + 1);
+        goToFrame(comparison.currentFrame + 1);
       }
     } 
     

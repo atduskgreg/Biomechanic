@@ -1,5 +1,9 @@
+import processing.opengl.*;
+
 CSVMap csvMap;
-Recording recording;
+//Recording recording;
+
+Comparison comparison;
 
 FrameController controller;
 ArrayList<GaitPhase> phases;
@@ -7,15 +11,19 @@ ArrayList<GaitPhase> phases;
 int rot = 0;
 
 void setup() {
-  size(1000, 600, P3D);
+  size(1000, 600, OPENGL);
   csvMap = new CSVMap("walking_3d.csv");
   csvMap.dataStartRow = 6;
   csvMap.labelRow = 4;
   csvMap.dataStartColumn = 2;
   csvMap.startColumn = 2;
 
-  recording = new Recording(csvMap);
-  controller = new FrameController(this, recording, 50, height - 100, width-100);
+  comparison = new Comparison();
+
+  Recording recording = new Recording(csvMap);
+  comparison.addRecording(recording, 0, recording.totalFrames-1);
+  
+  controller = new FrameController(this, comparison, 50, height - 100, width-100);
 
   phases = recording.detectPhases();
 
@@ -40,6 +48,8 @@ void draw() {
   
   text(int(frameRate), 20, 20);
   
+  Recording recording = comparison.recordings.get(0);
+  
   fill(0, 255, 0);
   text("Right ankle height: " + recording.joints.get(3).positionAtFrame(recording.currentFrame).z, 20, 50);
   text("Right ankle dZ: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).z, 20, 65);
@@ -63,8 +73,8 @@ void draw() {
     rotateZ(radians(map(mouseX, 0, width, -180, 180)));
     translate(0,0,-500);
     */
-   
-    recording.draw();
+    comparison.update();
+    comparison.draw();
   popMatrix();
 }
 
