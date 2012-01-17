@@ -29,6 +29,16 @@ class Recording {
   }
 
   void draw() {
+    noStroke();
+    fill(254);
+    beginShape(QUADS);
+    vertex(-1.25,-0.5,0);
+    vertex(-1.25,0.5,0);
+    vertex(3.25,0.5,0);
+    vertex(3.25,-0.5,0);
+    endShape();
+    
+    
     stroke(0);
     strokeWeight(2);
     for (int i = 0; i < limbs.size(); i ++ ) {
