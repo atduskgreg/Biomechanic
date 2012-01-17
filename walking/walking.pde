@@ -1,7 +1,9 @@
+import processing.video.*;
 import processing.opengl.*;
 
+MovieMaker mm;
+
 CSVMap csvMap;
-//Recording recording;
 
 Comparison comparison;
 Recording originalRecording;
@@ -17,7 +19,17 @@ ArrayList<GaitPhase> phases; // the working set that gets toggled with compariso
 ArrayList<GaitPhase> originalPhases; // the complete results of analysis
 
 void setup() {
+  
+  
   size(1000, 600, OPENGL);
+ 
+  hint(ENABLE_OPENGL_4X_SMOOTH);
+  
+  /*  println("loading movie maker");
+  mm = new MovieMaker(this, 1000, 600, "walking.mov",
+                       60, MovieMaker.ANIMATION, MovieMaker.HIGH);
+  println("done");*/
+  
   csvMap = new CSVMap("walking_3d.csv");
   csvMap.dataStartRow = 6;
   csvMap.labelRow = 4;
@@ -40,6 +52,8 @@ void setup() {
     GaitPhase phase = phases.get(i); 
     println("beginning frame: " + phase.startingFrame + " end frame: " + phase.endingFrame +  " type: " + phase.type);
   }
+  
+
 }
 
 void draw() {
@@ -106,6 +120,8 @@ void draw() {
   comparison.update();
   comparison.draw();
   popMatrix();
+  
+ // mm.addFrame();
 }
 
 void switchToComparisonMode() {
@@ -151,6 +167,10 @@ void keyPressed() {
   
   if(key == 'r') {
     rotateMode = !rotateMode;
+  }
+  
+  if (key == 'd') {
+    //mm.finish();  // Finish the movie if space bar is pressed!
   }
 }
 
