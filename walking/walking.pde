@@ -36,7 +36,7 @@ void setup() {
 
   for (int i = 0; i < phases.size(); i++) {
     GaitPhase phase = phases.get(i); 
-    println("beginning frame: " + phase.startingFrame + "end frame: " + phase.endingFrame +  " type: " + phase.type);
+    println("beginning frame: " + phase.startingFrame + " end frame: " + phase.endingFrame +  " type: " + phase.type);
   }
 }
 

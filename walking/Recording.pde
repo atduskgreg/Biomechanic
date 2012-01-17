@@ -48,11 +48,11 @@ class Recording implements Cloneable {
       boolean leftJointMin = false;
       boolean rightJointMin = false;
 
-      if (abs(leftSlope.z) < 0.01 && abs(leftSlope.x) < 0.01) {
+      if (abs(leftSlope.x) < 0.01){// && abs(leftSlope.z) < 0.01) {
         leftJointMin = true;
       }
 
-      if (abs(rightSlope.z) < 0.01 && abs(rightSlope.x) < 0.01) {
+      if (abs(rightSlope.x) < 0.01){// && abs(rightSlope.z) < 0.01) {
         rightJointMin = true;
       }
 

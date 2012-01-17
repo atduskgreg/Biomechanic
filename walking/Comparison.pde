@@ -25,8 +25,21 @@ class Comparison {
     vertex(3.25, -0.5, 0);
     endShape();
         
+    // use the left ankle as the reference point
+    PVector referencePoint = recordings.get(0).joints.get(9).positionAtFrame(ranges.get(0).startingFrame);     
+        
+        
+        
     for(int i = 0; i < recordings.size(); i++){
-      recordings.get(i).draw();
+
+      PVector recordingAnchor = recordings.get(i).joints.get(9).positionAtFrame(ranges.get(i).startingFrame);
+     // println("recording: " + i + " pos: " + recordingAnchor);
+
+      PVector offset = PVector.sub(recordingAnchor, referencePoint);
+      pushMatrix();
+        translate(-offset.x, -offset.y, -offset.z);   
+        recordings.get(i).draw();
+      popMatrix();
     }
   }
   
