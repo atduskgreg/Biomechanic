@@ -28,17 +28,88 @@ class Recording {
     limbs.add(new Limb(this, 10, 9));
   }
 
+  ArrayList<GaitPhase> detectPhases() {
+    Joint leftJoint = joints.get(3);
+    Joint rightJoint = joints.get(9);
+    
+    ArrayList<GaitPhase> results = new ArrayList();
+    
+    for (int i = 1; i < totalFrames-1; i++) {
+      // look for local minima in each limb
+      boolean leftJointMin = false;
+      boolean rightJointMin = false;
+
+      if (leftJoint.positionAtFrame(i).z < leftJoint.positionAtFrame(i-1).z 
+        && leftJoint.positionAtFrame(i).z < leftJoint.positionAtFrame(i+1).z) {
+        leftJointMin = true;
+      }
+
+      if (rightJoint.positionAtFrame(i).z < rightJoint.positionAtFrame(i-1).z 
+        && rightJoint.positionAtFrame(i).z < rightJoint.positionAtFrame(i+1).z) {
+        rightJointMin = true;
+      }
+
+
+      int phase = -1;
+      if (leftJointMin && rightJointMin) {
+        phase = GaitPhase.DOUBLE_SUPPORT;
+      } 
+      else {
+        if (leftJointMin) {
+          phase = GaitPhase.SINGLE_SUPPORT_LEFT;
+        }
+        if (rightJointMin) {
+          phase = GaitPhase.SINGLE_SUPPORT_RIGHT;
+        }
+      }
+      
+      if(phase != -1){
+        results.add(new GaitPhase(i, phase));
+      }
+      
+      // if the
+    }
+    
+    return results;
+  }
+  
+
   void draw() {
     noStroke();
     fill(254);
     beginShape(QUADS);
-    vertex(-1.25,-0.5,0);
-    vertex(-1.25,0.5,0);
-    vertex(3.25,0.5,0);
-    vertex(3.25,-0.5,0);
+    vertex(-1.25, -0.5, 0);
+    vertex(-1.25, 0.5, 0);
+    vertex(3.25, 0.5, 0);
+    vertex(3.25, -0.5, 0);
     endShape();
     
-    
+    strokeWeight(3);
+
+  stroke(0, 255, 0);
+  recording.joints.get(3).drawPath();
+  
+  stroke(255, 0, 0);
+  recording.joints.get(9).drawPath();
+
+    PVector lpos = recording.joints.get(3).positionAtFrame(recording.currentFrame);
+    PVector rpos = recording.joints.get(9).positionAtFrame(recording.currentFrame);
+
+
+  noStroke();
+    pushMatrix();
+    translate(lpos.x, lpos.y, lpos.z);
+    fill(0, 255, 0);
+
+    ellipse(0, 0, 0.08, 0.08);
+    popMatrix();
+
+    pushMatrix();
+    translate(rpos.x, rpos.y, rpos.z);
+    fill(255, 0, 0);
+    ellipse(0, 0, 0.08, 0.08);
+    popMatrix();
+
     stroke(0);
     strokeWeight(2);
     for (int i = 0; i < limbs.size(); i ++ ) {

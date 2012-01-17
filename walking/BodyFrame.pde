@@ -7,6 +7,15 @@ class Joint {
     this.name = name;
     frames = new ArrayList();
   }
+  
+  void drawPath(){
+    beginShape(LINE);
+    for(int i = 0; i < frames.size(); i++){
+      PVector position = frames.get(i).position;
+      vertex(position.x, position.y, position.z);
+    }
+    endShape();
+  }
 
   void addFrame(Frame frame) {
     frames.add(frame);
@@ -29,7 +38,6 @@ class Limb {
   void drawAtFrame(int frame) {
     PVector joint1Position = joint1.positionAtFrame(frame);
     PVector joint2Position = joint2.positionAtFrame(frame);
-    
     
     line(joint1Position.x, joint1Position.y, joint1Position.z, joint2Position.x, joint2Position.y, joint2Position.z);
   }
