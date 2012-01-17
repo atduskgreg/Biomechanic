@@ -1,0 +1,10 @@
+==Biomehcanic
+
+Biomechanic is an open source human movement visualization, comparison and analysis tool written in Processing and developed by Greg Borenstein and Dustyn Roberts. It can load and display 2D and 3D movement data from arbitrary CSVs, detect gait cycles, and make comparisons between multiple data sets or individual gait cycles. Right now it has minimal UI that only exposes a small number of its features.
+
+Main work is in the "walking" directory but a few other experiments are in the repo as well. "Walking" contains the ability to animate the movement data, scrubbing through it on the timeline, look at it in 3D, automatically identify gait cycles, and compare multiple gait cycles from the same movement recording.
+
+Notable here is that example is the gait cycle detection. On loading the movement data from the CSV, Biomechanic analyzes it for the phases of gait: single support on left leg, single support on right leg, and double support. It displays these phases in the timeline underneath the visualization. It also uses this phase detection to align two full gait phases (two strides) for comparison (demonstrated in the second half of the video). This is meant to simulate comparing multiple different sets of movement data for cost/fitness function analysis.
+
+See a video of Biomechanic in action here http://vimeo.com/35221911[http://vimeo.com/35221911].
+
