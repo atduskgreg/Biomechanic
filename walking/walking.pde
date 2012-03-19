@@ -1,7 +1,6 @@
 import processing.video.*;
 import processing.opengl.*;
 
-MovieMaker mm;
 
 CSVMap csvMap;
 
@@ -9,7 +8,7 @@ Comparison comparison;
 Recording originalRecording;
 
 boolean comparisonMode = false;
-
+boolean render3d = false;
 boolean rotateMode = false;
 
 float rotation = 0;
@@ -128,7 +127,7 @@ void switchToComparisonMode() {
   comparison.clear();
   comparison.addRecording(originalRecording, originalPhases.get(1).startingFrame, originalPhases.get(4).endingFrame);
   comparison.addRecording(originalRecording, originalPhases.get(5).startingFrame, originalPhases.get(8).endingFrame);
-  
+    
   phases.clear();
   phases.add(originalPhases.get(1));
   phases.add(originalPhases.get(2));
@@ -169,8 +168,10 @@ void keyPressed() {
     rotateMode = !rotateMode;
   }
   
+  
+  
   if (key == 'd') {
-    //mm.finish();  // Finish the movie if space bar is pressed!
+    render3d = !render3d;
   }
 }
 

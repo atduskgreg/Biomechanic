@@ -49,12 +49,49 @@ class Limb {
     this.joint1 = recording.joints.get(joint1Num);
     this.joint2 = recording.joints.get(joint2Num);
   }
+  
+  void drawTruncated(float x, float y, float z){}
 
   void drawAtFrame(int frame) {
     PVector joint1Position = joint1.positionAtFrame(frame);
     PVector joint2Position = joint2.positionAtFrame(frame);
     
-    line(joint1Position.x, joint1Position.y, joint1Position.z, joint2Position.x, joint2Position.y, joint2Position.z);
+    if(render3d){
+    
+    PVector limbDirection = new PVector(joint1Position.x,joint1Position.y,joint1Position.z );
+    
+    // calculate the "limb" vector between j1 and j2
+    limbDirection.sub(joint2Position);
+    
+    PVector limbDifference = new PVector(limbDirection.x, limbDirection.y, limbDirection.z);
+    
+    // capture length of limb
+    float limbLength = limbDifference.mag();
+    
+    limbDirection.normalize();
+    
+    // define model orientation (0,1,0)
+    PVector modelOrientation = new PVector(0,1,0);
+    
+    float angle = acos(modelOrientation.dot(limbDirection)); 
+    PVector axis = modelOrientation.cross(limbDirection); 
+    
+    pushMatrix();
+    pushStyle();
+    //translate(joint1Position.x, joint1Position.y, joint1Position.z);
+    translate((joint1Position.x + joint2Position.x)/2, (joint1Position.y + joint2Position.y)/2, (joint1Position.z + joint2Position.z)/2 );
+     //noStroke();
+     stroke(150, 0, 0);
+    // rotate angle amount around axis
+    rotate(angle, axis.x, axis.y, axis.z);
+
+    box(0.05, limbLength, 0.05);
+    popStyle();
+    popMatrix();
+    } else {
+    
+      line(joint1Position.x, joint1Position.y, joint1Position.z, joint2Position.x, joint2Position.y, joint2Position.z);
+    }
   }
 }
 
