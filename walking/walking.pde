@@ -1,9 +1,10 @@
 import processing.video.*;
 import processing.opengl.*;
 
+String dataFilename = "Animation.csv";
+
 
 CSVMap csvMap;
-
 Comparison comparison;
 Recording originalRecording;
 
@@ -18,18 +19,19 @@ ArrayList<GaitPhase> phases; // the working set that gets toggled with compariso
 ArrayList<GaitPhase> originalPhases; // the complete results of analysis
 
 void setup() {
-  
-  
+  frameRate(5);
+
   size(1000, 600, OPENGL);
- 
+
   hint(ENABLE_OPENGL_4X_SMOOTH);
-  
+
   /*  println("loading movie maker");
-  mm = new MovieMaker(this, 1000, 600, "walking.mov",
-                       60, MovieMaker.ANIMATION, MovieMaker.HIGH);
-  println("done");*/
-  
-  csvMap = new CSVMap("walking_3d.csv"); // walking_3d.config
+   mm = new MovieMaker(this, 1000, 600, "walking.mov",
+   60, MovieMaker.ANIMATION, MovieMaker.HIGH);
+   println("done");*/
+
+  csvMap = new CSVMap(dataFilename); // walking_3d.config
+    println(csvMap.pathToCSV);
 
   comparison = new Comparison();
 
@@ -40,15 +42,13 @@ void setup() {
 
   originalPhases = originalRecording.detectPhases();
   phases = (ArrayList<GaitPhase>)originalPhases.clone();
-  
+
   println("num phases: " + phases.size());
 
   for (int i = 0; i < phases.size(); i++) {
     GaitPhase phase = phases.get(i); 
     println("beginning frame: " + phase.startingFrame + " end frame: " + phase.endingFrame +  " type: " + phase.type);
   }
-  
-
 }
 
 void draw() {
@@ -71,12 +71,12 @@ void draw() {
   fill(255, 0, 0);
   text("Left ankle dX: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).x, 20, 50);
 
-  if(comparisonMode){
+  if (comparisonMode) {
     fill(0);
     text("GAIT CYCLE COMPARISON", width-250, 20);
     Recording recording1 = comparison.recordings.get(0);
     Recording recording2 = comparison.recordings.get(1);
-   
+
     float strideLength1 = recording1.joints.get(9).positionAtFrame(comparison.ranges.get(0).startingFrame).x - recording1.joints.get(9).positionAtFrame(comparison.ranges.get(0).endingFrame).x;
     float strideLength2 = recording2.joints.get(9).positionAtFrame(comparison.ranges.get(1).startingFrame).x - recording2.joints.get(9).positionAtFrame(comparison.ranges.get(1).endingFrame).x;
 
@@ -86,57 +86,75 @@ void draw() {
     text("Cycle 2 length (m): " + strideLength2, width-250, 50 );
     fill(0);
     text("Length difference (m): " + abs(strideLength1 - strideLength2), width-250, 65 );
-  } else {
+  } 
+  else {
     fill(0);
     text("FULL PLAYBACK", width-250, 20);
     text("Gait phases detected: " + originalPhases.size(), width-250, 35 );
     text("Complete gait cycles detected: " + originalPhases.size()/4, width-250, 50 );
-
   }
 
 
   pushMatrix();
   translate(300, 500, -100);
   scale(200);
-  rotateX(radians(90));
-
-
-  if(rotateMode){
-    rotation = map(mouseX, 0, width, -180, 180);
-  }
-   
-    // for some reason this makes things incredibly slow only in 2.0a4
-   translate(0,0, 500);
-     rotateZ(radians(rotation));
-   translate(0,0,-500);
 
  
-   
+
+
+  if (rotateMode) {
+    rotation = map(mouseX, 0, width, -180, 180);
+  }
+
+  // for some reason this makes things incredibly slow only in 2.0a4
+ 
+
   comparison.update();
-  comparison.draw();
+  fill(254);
+  pushMatrix();
+    rotateX(radians(90));
+     translate(0, 0, 500);
+     rotateZ(radians(rotation));
+    translate(0, 0, -500);
+    beginShape(QUADS);
+    vertex(-1.25, -0.5, 0);
+    vertex(-1.25, 0.5, 0);
+    vertex(3.25, 0.5, 0);
+    vertex(3.25, -0.5, 0);
+    endShape();
+    
   popMatrix();
   
- // mm.addFrame();
+   translate(0, 0, 500);
+   rotateZ(radians(rotation));
+   translate(0, 0, -500);  
+
+  comparison.draw();
+  popMatrix();
+
+  // mm.addFrame();
 }
 
 void switchToComparisonMode() {
-  comparison.clear();
-  comparison.addRecording(originalRecording, originalPhases.get(1).startingFrame, originalPhases.get(4).endingFrame);
-  comparison.addRecording(originalRecording, originalPhases.get(5).startingFrame, originalPhases.get(8).endingFrame);
-    
-  phases.clear();
-  phases.add(originalPhases.get(1));
-  phases.add(originalPhases.get(2));
-  phases.add(originalPhases.get(3));
-  phases.add(originalPhases.get(4));
-  
-  comparisonMode = true;
+  if (originalPhases.size() > 2) {
+    comparison.clear();
+    comparison.addRecording(originalRecording, originalPhases.get(1).startingFrame, originalPhases.get(4).endingFrame);
+    comparison.addRecording(originalRecording, originalPhases.get(5).startingFrame, originalPhases.get(8).endingFrame);
+
+    phases.clear();
+    phases.add(originalPhases.get(1));
+    phases.add(originalPhases.get(2));
+    phases.add(originalPhases.get(3));
+    phases.add(originalPhases.get(4));
+
+    comparisonMode = true;
+  }
 }
 
 void switchToPlaybackMode() {
   comparison.clear();
   comparison.addRecording(originalRecording, 0, originalRecording.totalFrames);
-  
+
   phases.clear();
   phases = (ArrayList<GaitPhase>)originalPhases.clone();
 
@@ -159,13 +177,13 @@ void keyPressed() {
       switchToComparisonMode();
     }
   }
-  
-  if(key == 'r') {
+
+  if (key == 'r') {
     rotateMode = !rotateMode;
   }
-  
-  
-  
+
+
+
   if (key == 'd') {
     render3d = !render3d;
   }

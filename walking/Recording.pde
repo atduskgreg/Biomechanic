@@ -11,11 +11,19 @@ class Recording implements Cloneable {
   Recording(CSVMap csvMap) {
     joints = new ArrayList();
     limbs = new ArrayList();
+    this.csvMap = csvMap;
     parse(csvMap);
     configureLimbs();
   }
 
   void configureLimbs() {
+    println(this.csvMap);
+    LimbConfig config = new LimbConfig(csvMap.pathToCSV);
+    for(int i = 0; i < config.jointPairs.length; i++){
+      limbs.add(new Limb(this, config.jointPairs[i][0],config.jointPairs[i][1]));
+    }
+    
+    /*
     limbs.add(new Limb(this, 2, 0));
     limbs.add(new Limb(this, 0, 1));
     limbs.add(new Limb(this, 1, 7));
@@ -28,6 +36,7 @@ class Recording implements Cloneable {
     limbs.add(new Limb(this, 6, 8));
     limbs.add(new Limb(this, 11, 10));
     limbs.add(new Limb(this, 10, 9));
+    */
   }
 
 
