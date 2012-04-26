@@ -29,11 +29,7 @@ void setup() {
                        60, MovieMaker.ANIMATION, MovieMaker.HIGH);
   println("done");*/
   
-  csvMap = new CSVMap("walking_3d.csv");
-  csvMap.dataStartRow = 6;
-  csvMap.labelRow = 4;
-  csvMap.dataStartColumn = 2;
-  csvMap.startColumn = 2;
+  csvMap = new CSVMap("walking_3d.csv"); // walking_3d.config
 
   comparison = new Comparison();
 
@@ -78,7 +74,7 @@ void draw() {
   if(comparisonMode){
     fill(0);
     text("GAIT CYCLE COMPARISON", width-250, 20);
-      Recording recording1 = comparison.recordings.get(0);
+    Recording recording1 = comparison.recordings.get(0);
     Recording recording2 = comparison.recordings.get(1);
    
     float strideLength1 = recording1.joints.get(9).positionAtFrame(comparison.ranges.get(0).startingFrame).x - recording1.joints.get(9).positionAtFrame(comparison.ranges.get(0).endingFrame).x;

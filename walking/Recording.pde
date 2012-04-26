@@ -149,7 +149,7 @@ class Recording implements Cloneable {
       int currentJointIndex = 0;
 
 
-      for (int j = csvMap.dataStartColumn; j < dataColumns.length; j += csvMap.dimensions) {   
+      for (int j = csvMap.startColumn; j < dataColumns.length; j += csvMap.dimensions) {   
 
         float x = float(dataColumns[j]);
         float y = float(dataColumns[j+1]);

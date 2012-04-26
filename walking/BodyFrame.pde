@@ -78,7 +78,6 @@ class Limb {
     
     pushMatrix();
     pushStyle();
-    //translate(joint1Position.x, joint1Position.y, joint1Position.z);
     translate((joint1Position.x + joint2Position.x)/2, (joint1Position.y + joint2Position.y)/2, (joint1Position.z + joint2Position.z)/2 );
      //noStroke();
      stroke(150, 0, 0);
