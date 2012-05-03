@@ -111,6 +111,7 @@ class Recording implements Cloneable {
       popMatrix();
     }
 
+    // CHANGE STROKE AND FILL SETTINGS HERE
     stroke(skeletonColor);
     fill(skeletonColor);
     strokeWeight(3);
