@@ -9,7 +9,7 @@ Comparison comparison;
 Recording originalRecording;
 
 boolean comparisonMode = false;
-boolean render3d = false;
+boolean render3d = true;
 boolean rotateMode = false;
 
 float rotation = 0;
@@ -91,12 +91,12 @@ void draw() {
     fill(0);
     text("Length difference (m): " + abs(strideLength1 - strideLength2), width-250, 65 );
   } 
-  else {
+  /*else {
     fill(0);
     text("FULL PLAYBACK", width-250, 20);
     text("Gait phases detected: " + originalPhases.size(), width-250, 35 );
     text("Complete gait cycles detected: " + originalPhases.size()/4, width-250, 50 );
-  }
+  }*/
 
 
 

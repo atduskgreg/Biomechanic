@@ -5,7 +5,7 @@ class Comparison {
   int totalFrames = 0;
 
   color[] skeletonColors = {
-    color(0, 100, 100), color(100, 100, 0)
+    color(200, 0, 0), color(0, 100, 100)
   };
 
   Comparison() {
@@ -34,6 +34,7 @@ class Comparison {
       // println("recording: " + i + " pos: " + recordingAnchor);
 
       PVector offset = PVector.sub(recordingAnchor, referencePoint);
+      
       pushMatrix();
 
       translate(-offset.x, -offset.y, -offset.z);   

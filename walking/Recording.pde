@@ -3,7 +3,7 @@ class Recording implements Cloneable {
   ArrayList<Joint> joints;
   int totalFrames;
   ArrayList<Limb> limbs;
-  
+
   color skeletonColor = color(0); // default to black
 
   int currentFrame = 0;
@@ -19,24 +19,9 @@ class Recording implements Cloneable {
   void configureLimbs() {
     println(this.csvMap);
     LimbConfig config = new LimbConfig(csvMap.pathToCSV);
-    for(int i = 0; i < config.jointPairs.length; i++){
-      limbs.add(new Limb(this, config.jointPairs[i][0],config.jointPairs[i][1]));
+    for (int i = 0; i < config.jointPairs.length; i++) {
+      limbs.add(new Limb(this, config.jointPairs[i][0], config.jointPairs[i][1]));
     }
-    
-    /*
-    limbs.add(new Limb(this, 2, 0));
-    limbs.add(new Limb(this, 0, 1));
-    limbs.add(new Limb(this, 1, 7));
-    limbs.add(new Limb(this, 1, 11));
-    limbs.add(new Limb(this, 5, 11));
-    limbs.add(new Limb(this, 5, 4));
-    limbs.add(new Limb(this, 4, 3));
-    limbs.add(new Limb(this, 7, 5));
-    limbs.add(new Limb(this, 7, 6));
-    limbs.add(new Limb(this, 6, 8));
-    limbs.add(new Limb(this, 11, 10));
-    limbs.add(new Limb(this, 10, 9));
-    */
   }
 
 
@@ -59,11 +44,11 @@ class Recording implements Cloneable {
       boolean leftJointMin = false;
       boolean rightJointMin = false;
 
-      if (abs(leftSlope.x) < 0.01){// && abs(leftSlope.z) < 0.01) {
+      if (abs(leftSlope.x) < 0.01) {// && abs(leftSlope.z) < 0.01) {
         leftJointMin = true;
       }
 
-      if (abs(rightSlope.x) < 0.01){// && abs(rightSlope.z) < 0.01) {
+      if (abs(rightSlope.x) < 0.01) {// && abs(rightSlope.z) < 0.01) {
         rightJointMin = true;
       }
 
@@ -98,33 +83,36 @@ class Recording implements Cloneable {
 
 
   void draw() {
-    strokeWeight(3);
+    if (comparisonMode) {
+      strokeWeight(3);
 
-    stroke(0, 255, 0);
-    joints.get(3).drawPath();
+      stroke(0, 255, 0);
+      joints.get(3).drawPath();
 
-    stroke(255, 0, 0);
-    joints.get(9).drawPath();
+      stroke(255, 0, 0);
+      joints.get(9).drawPath();
 
-    PVector lpos = joints.get(3).positionAtFrame(currentFrame);
-    PVector rpos = joints.get(9).positionAtFrame(currentFrame);
+      PVector lpos = joints.get(3).positionAtFrame(currentFrame);
+      PVector rpos = joints.get(9).positionAtFrame(currentFrame);
 
 
-    noStroke();
-    pushMatrix();
-    translate(lpos.x, lpos.y, lpos.z);
-    fill(0, 255, 0);
+      noStroke();
+      pushMatrix();
+      translate(lpos.x, lpos.y, lpos.z);
+      fill(0, 255, 0);
 
-    ellipse(0, 0, 0.08, 0.08);
-    popMatrix();
+      ellipse(0, 0, 0.08, 0.08);
+      popMatrix();
 
-    pushMatrix();
-    translate(rpos.x, rpos.y, rpos.z);
-    fill(255, 0, 0);
-    ellipse(0, 0, 0.08, 0.08);
-    popMatrix();
+      pushMatrix();
+      translate(rpos.x, rpos.y, rpos.z);
+      fill(255, 0, 0);
+      ellipse(0, 0, 0.08, 0.08);
+      popMatrix();
+    }
 
     stroke(skeletonColor);
+    fill(skeletonColor);
     strokeWeight(3);
     for (int i = 0; i < limbs.size(); i ++ ) {
       limbs.get(i).drawAtFrame(currentFrame);
