@@ -33,13 +33,15 @@ void setup() {
    60, MovieMaker.ANIMATION, MovieMaker.HIGH);
    println("done");*/
 
-  csvMap = new CSVMap(dataFilename); // walking_3d.config
-  println(csvMap.pathToCSV);
+  csvMap = new CSVMap(dataFilename);
 
   comparison = new Comparison();
 
   originalRecording = new Recording(csvMap);
+  println("totalFrames parsed: " + originalRecording.totalFrames);
+  
   comparison.addRecording(originalRecording, 0, originalRecording.totalFrames);
+  println("comparison totalFrames: " + comparison.totalFrames);
 
   controller = new FrameController(this, comparison, 50, height - 100, width-100);
 
