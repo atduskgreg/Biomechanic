@@ -53,7 +53,7 @@ class FrameController {
 
     text(comparison.currentFrame + 1 + "/" + comparison.totalFrames, playarea.width/2 - 40, 55);
     fill(190);
-    text("Play/Pause - spacebar      Previous Frame - left arrow      Next Frame - right arrow      Toggle 3d - d      Toggle Rotation - r", playarea.width/2 - 360, 90);
+    text("Play/Pause - spacebar      Change FPS - +/-      Previous Frame - left arrow      Next Frame - right arrow      Toggle 3d - d      Toggle Rotation - r", playarea.width/2 - 360, 90);
 
     noStroke();
     fill(0);

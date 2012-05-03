@@ -12,6 +12,8 @@ boolean comparisonMode = false;
 boolean render3d = true;
 boolean rotateMode = false;
 
+boolean flipHorizontal = false;
+
 float rotation = 0;
 
 FrameController controller;
@@ -39,7 +41,7 @@ void setup() {
 
   originalRecording = new Recording(csvMap);
   println("totalFrames parsed: " + originalRecording.totalFrames);
-  
+
   comparison.addRecording(originalRecording, 0, originalRecording.totalFrames);
   println("comparison totalFrames: " + comparison.totalFrames);
 
@@ -94,11 +96,11 @@ void draw() {
     text("Length difference (m): " + abs(strideLength1 - strideLength2), width-250, 65 );
   } 
   /*else {
-    fill(0);
-    text("FULL PLAYBACK", width-250, 20);
-    text("Gait phases detected: " + originalPhases.size(), width-250, 35 );
-    text("Complete gait cycles detected: " + originalPhases.size()/4, width-250, 50 );
-  }*/
+   fill(0);
+   text("FULL PLAYBACK", width-250, 20);
+   text("Gait phases detected: " + originalPhases.size(), width-250, 35 );
+   text("Complete gait cycles detected: " + originalPhases.size()/4, width-250, 50 );
+   }*/
 
 
 
@@ -111,8 +113,10 @@ void draw() {
     controller.update();
     comparison.update();
   }
-  
+
   pushMatrix();
+
+  
   translate(300, 500, -100);
   scale(200);
 
@@ -126,8 +130,8 @@ void draw() {
   translate(0, 0, 500);
   rotateZ(radians(rotation));
   translate(0, 0, -500);
-  
-  
+
+
   beginShape(QUADS);
   vertex(-1.25, -0.5, 0);
   vertex(-1.25, 0.5, 0);
@@ -141,7 +145,7 @@ void draw() {
   rotateZ(radians(rotation));
   translate(0, 0, -500);  
 
-
+ 
   comparison.draw();
   popMatrix();
 
@@ -212,6 +216,10 @@ void keyPressed() {
     if (targetFPS < 1) {
       targetFPS = 1;
     }
+  }
+
+  if (key == 'f') {
+    flipHorizontal = !flipHorizontal;
   }
 }
 

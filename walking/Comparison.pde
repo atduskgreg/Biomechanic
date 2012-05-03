@@ -34,22 +34,27 @@ class Comparison {
       // println("recording: " + i + " pos: " + recordingAnchor);
 
       PVector offset = PVector.sub(recordingAnchor, referencePoint);
-      
+
       pushMatrix();
 
       translate(-offset.x, -offset.y, -offset.z);   
 
       if (recordings.get(i).csvMap.upAxis.equals("y")) {
         rotateX(radians(180));
-        if(recordings.get(i).csvMap.forwardAxis.equals("z")){
-           rotateY(radians(90));
+        if (recordings.get(i).csvMap.forwardAxis.equals("z")) {
+          rotateY(radians(90));
         }
       }
-                   
+
       // WARN: prospective! never tried.
       if (recordings.get(i).csvMap.upAxis.equals("z")) {
         rotateY(radians(90));
       }
+
+      if (flipHorizontal) {
+        scale(-1, 1, 1);
+      }
+
 
       recordings.get(i).draw();
       popMatrix();
