@@ -18,9 +18,12 @@ FrameController controller;
 ArrayList<GaitPhase> phases; // the working set that gets toggled with comparison
 ArrayList<GaitPhase> originalPhases; // the complete results of analysis
 
-void setup() {
-  frameRate(5);
+int targetFPS = 30;
 
+int millisBetweenFrames = 1000 / targetFPS;
+int timeOfLastFrame = 0;
+
+void setup() {
   size(1000, 600, OPENGL);
 
   hint(ENABLE_OPENGL_4X_SMOOTH);
@@ -31,7 +34,7 @@ void setup() {
    println("done");*/
 
   csvMap = new CSVMap(dataFilename); // walking_3d.config
-    println(csvMap.pathToCSV);
+  println(csvMap.pathToCSV);
 
   comparison = new Comparison();
 
@@ -49,6 +52,7 @@ void setup() {
     GaitPhase phase = phases.get(i); 
     println("beginning frame: " + phase.startingFrame + " end frame: " + phase.endingFrame +  " type: " + phase.type);
   }
+  timeOfLastFrame = millis();
 }
 
 void draw() {
@@ -57,19 +61,19 @@ void draw() {
   stroke(0);
   fill(0);  
 
-  controller.update();
   controller.draw();
 
-  text(int(frameRate), 20, 20);
+  text("APP FPS: " + int(frameRate) + "\nPLABACK FPS: " + targetFPS, 20, 20);
 
   Recording recording = comparison.recordings.get(0);
 
-  fill(0, 255, 0);
+  /*fill(0, 255, 0);
   text("Right ankle dX: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).x, 20, 35);
 
 
   fill(255, 0, 0);
   text("Left ankle dX: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).x, 20, 50);
+  */
 
   if (comparisonMode) {
     fill(0);
@@ -95,26 +99,31 @@ void draw() {
   }
 
 
-  pushMatrix();
-  translate(300, 500, -100);
-  scale(200);
-
- 
-
-
-  if (rotateMode) {
-    rotation = map(mouseX, 0, width, -180, 180);
-  }
 
   // for some reason this makes things incredibly slow only in 2.0a4
- 
 
-  comparison.update();
-  fill(254);
-  pushMatrix();
+  // enforce playback rate of animation
+  millisBetweenFrames = 1000 / targetFPS;
+  if (millis() - timeOfLastFrame >= millisBetweenFrames) {
+    timeOfLastFrame = millis();
+      controller.update();
+
+    comparison.update();
+   
+  }
+    pushMatrix();
+    translate(300, 500, -100);
+    scale(200);
+
+    if (rotateMode) {
+      rotation = map(mouseX, 0, width, -180, 180);
+    }
+    
+     fill(254);
+    pushMatrix();
     rotateX(radians(90));
-     translate(0, 0, 500);
-     rotateZ(radians(rotation));
+    translate(0, 0, 500);
+    rotateZ(radians(rotation));
     translate(0, 0, -500);
     beginShape(QUADS);
     vertex(-1.25, -0.5, 0);
@@ -122,15 +131,17 @@ void draw() {
     vertex(3.25, 0.5, 0);
     vertex(3.25, -0.5, 0);
     endShape();
-    
-  popMatrix();
-  
-   translate(0, 0, 500);
-   rotateZ(radians(rotation));
-   translate(0, 0, -500);  
 
-  comparison.draw();
-  popMatrix();
+    popMatrix();
+
+    translate(0, 0, 500);
+    rotateZ(radians(rotation));
+    translate(0, 0, -500);  
+
+    comparison.draw();
+    popMatrix();
+
+
 
   // mm.addFrame();
 }
@@ -187,6 +198,18 @@ void keyPressed() {
   if (key == 'd') {
     render3d = !render3d;
   }
+  
+  if (key == '=' ){
+    targetFPS++;
+  }  
+  
+  if(key == '-'){
+    targetFPS--;
+    if(targetFPS < 1){
+      targetFPS = 1;
+    }
+  }
+  
 }
 
 void mouseDragged() {
