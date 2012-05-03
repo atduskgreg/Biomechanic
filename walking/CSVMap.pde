@@ -7,6 +7,7 @@ class CSVMap {
   String[] rows;
   String pathToCSV;
   String upAxis;
+  String forwardAxis;
 
   CSVMap(String pathToCSV) {
     this.pathToCSV = pathToCSV;
@@ -20,6 +21,7 @@ class CSVMap {
     this.dataStartRow = config.dataStartRow;
     this.startColumn = config.startColumn;
     this.upAxis = config.upAxis;
+    this.forwardAxis = config.forwardAxis;
   }
 
   String[] getColumnHeaders() {
@@ -48,6 +50,7 @@ class CSVConfig {
   int labelRow;
   int dataStartRow;
   String upAxis; // "x", "y", or "z"
+  String forwardAxis;
 
   CSVConfig(String pathToConfig) {
     String[] configLines = loadStrings(pathToConfig);
@@ -68,6 +71,10 @@ class CSVConfig {
       
       if (parts[0].equals("upAxis")) {
         this.upAxis = parts[1];
+      }
+      
+      if (parts[0].equals("forwardAxis")) {
+        this.forwardAxis = parts[1];
       }
     }
   }

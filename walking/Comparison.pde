@@ -39,10 +39,13 @@ class Comparison {
       translate(-offset.x, -offset.y, -offset.z);   
 
       if (recordings.get(i).csvMap.upAxis.equals("y")) {
-
         rotateX(radians(180));
+        if(recordings.get(i).csvMap.forwardAxis.equals("z")){
+           rotateY(radians(90));
+        }
       }
-
+                   
+      // WARN: prospective! never tried.
       if (recordings.get(i).csvMap.upAxis.equals("z")) {
         rotateY(radians(90));
       }

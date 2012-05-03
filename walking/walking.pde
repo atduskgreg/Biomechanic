@@ -68,12 +68,12 @@ void draw() {
   Recording recording = comparison.recordings.get(0);
 
   /*fill(0, 255, 0);
-  text("Right ankle dX: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).x, 20, 35);
-
-
-  fill(255, 0, 0);
-  text("Left ankle dX: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).x, 20, 50);
-  */
+   text("Right ankle dX: " + recording.joints.get(3).slopeAtFrame(recording.currentFrame).x, 20, 35);
+   
+   
+   fill(255, 0, 0);
+   text("Left ankle dX: " + recording.joints.get(9).slopeAtFrame(recording.currentFrame).x, 20, 50);
+   */
 
   if (comparisonMode) {
     fill(0);
@@ -106,40 +106,42 @@ void draw() {
   millisBetweenFrames = 1000 / targetFPS;
   if (millis() - timeOfLastFrame >= millisBetweenFrames) {
     timeOfLastFrame = millis();
-      controller.update();
-
+    controller.update();
     comparison.update();
-   
   }
-    pushMatrix();
-    translate(300, 500, -100);
-    scale(200);
+  
+  pushMatrix();
+  translate(300, 500, -100);
+  scale(200);
 
-    if (rotateMode) {
-      rotation = map(mouseX, 0, width, -180, 180);
-    }
-    
-     fill(254);
-    pushMatrix();
-    rotateX(radians(90));
-    translate(0, 0, 500);
-    rotateZ(radians(rotation));
-    translate(0, 0, -500);
-    beginShape(QUADS);
-    vertex(-1.25, -0.5, 0);
-    vertex(-1.25, 0.5, 0);
-    vertex(3.25, 0.5, 0);
-    vertex(3.25, -0.5, 0);
-    endShape();
+  if (rotateMode) {
+    rotation = map(mouseX, 0, width, -180, 180);
+  }
 
-    popMatrix();
+  fill(254);
+  pushMatrix();
+  rotateX(radians(90));
+  translate(0, 0, 500);
+  rotateZ(radians(rotation));
+  translate(0, 0, -500);
+  
+  
+  beginShape(QUADS);
+  vertex(-1.25, -0.5, 0);
+  vertex(-1.25, 0.5, 0);
+  vertex(3.25, 0.5, 0);
+  vertex(3.25, -0.5, 0);
+  endShape();
 
-    translate(0, 0, 500);
-    rotateZ(radians(rotation));
-    translate(0, 0, -500);  
+  popMatrix();
 
-    comparison.draw();
-    popMatrix();
+  translate(0, 0, 500);
+  rotateZ(radians(rotation));
+  translate(0, 0, -500);  
+
+
+  comparison.draw();
+  popMatrix();
 
 
 
@@ -198,18 +200,17 @@ void keyPressed() {
   if (key == 'd') {
     render3d = !render3d;
   }
-  
-  if (key == '=' ){
+
+  if (key == '=' ) {
     targetFPS++;
   }  
-  
-  if(key == '-'){
+
+  if (key == '-') {
     targetFPS--;
-    if(targetFPS < 1){
+    if (targetFPS < 1) {
       targetFPS = 1;
     }
   }
-  
 }
 
 void mouseDragged() {
